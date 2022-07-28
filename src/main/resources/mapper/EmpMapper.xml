@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.example.demo.emp.mapper.EmpMapper">
+	<select id="getEmpList" resultType="EmpVO">
+		SELECT rownum id, e.*
+		FROM employees e
+	</select>
+	<!-- 부서리스트 조회 -->
+	<select id="getDepartments" resultType="com.example.demo.emp.service.DeptVO">
+		select * from departments order by department_id
+	</select>
+
+	<!-- 직무리스트 조회 -->
+	<select id="getJobs" resultType="com.example.demo.emp.service.JobVO">	
+		select job_id, job_title from jobs order by job_id
+	</select>
+	
+	<!-- 단건조회 -->
+	<select id="getEmp" parameterType="com.example.demo.emp.service.EmpVO" resultType="com.example.demo.emp.service.EmpVO">
+		select * from employees
+		where employee_id=#{employeeId}
+	</select>
+
+</mapper>

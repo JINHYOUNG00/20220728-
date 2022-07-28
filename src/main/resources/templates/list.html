@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="UTF-8">
+<title>Insert title here</title>
+<link href="//cdn.datatables.net/1.12.1/css/jquery.dataTables.min.css"
+	rel="stylesheet">
+<script src="//cdn.datatables.net/1.12.1/js/jquery.dataTables.min.js"></script>
+<!-- <style>
+body {
+    text-align: center;
+    padding: 100px;
+    background: whitesmoke;
+    display: table-cell;
+}
+</style> -->
+
+
+
+
+
+<script>
+ $(function () {
+  /*$('#myTable').DataTable(); */
+  $('[name="type"]').val('${cri.type}')
+  
+  // 수정, 삭제 메시지 출력
+  var result1 = '${result1}'
+  var result2 = '${param.result2}'
+  
+  	if(result1 != '') {
+		const myModal = new bootstrap.Modal('#staticBackdrop', {});
+		const modal = document.getElementById("staticBackdrop");
+		$("#msg").html(result1);			
+		myModal.show(modal);
+  }
+} );
+
+	function goPage(num){
+	 	searchFrm.page.value = num;
+	 	searchFrm.submit();
+		// location.href="boardSelectList?pageNum="+ num
+			
+	}
+	
+	
+	
+
+</script>
+${cri}
+</head>
+<body>
+	<div>
+		<h1>게시판조회</h1>
+	</div>
+	<div>
+<div class="card">
+  <div class="card-header">
+    Featured
+  </div>
+  <div class="card-body">
+<form name="searchFrm">
+	<input type="hidden" name="pageNum" value="1">
+	<select name="type">
+		<option value="title">제목
+		<option value="content">내용
+		<option value="writer">작성자
+	</select>
+	<input name="keyword">
+	<button>검색</button>
+</form>
+	 </div>
+</div>
+<div class="card">
+  <div class="card-header">
+    Featured
+  </div>
+ <div class="card-body">
+		<table id="myTable" class="table table-success table-striped" border="1">
+			<thead>
+				<tr>
+					<th>게시글번호</th>
+					<th>게시글제목</th>
+					<th>작성자</th>
+					<th>등록일</th>
+					<th>수정일</th>
+					<th>수정</th>
+					<th>삭제</th>
+				</tr>
+			</thead>
+			<tbody>
+				<!-- <c:forEach items="${list}" var="vo"> -->
+					<tr th:each="board : ${list}">
+						<td>${board.bno}</td>
+						<td><a href="#" onclick="boardSelect(${vo.bno})">${board.title }</a></td>
+						<td>${board.writer }</td>
+						<td>${board.regdate}</td>
+						<td>${board.updateDate}</td>
+						<td><button onclick="boardUpdate(${board.bno})">수정</button></td>
+						<td><button onclick="boardDelete(${board.bno})">삭제</button></td>
+					</tr>
+				<!-- </c:forEach> -->
+			</tbody>
+		</table>
+		</div>
+		</div>
+		<nav aria-label="...">
+			<ul class="pagination">
+				<!-- <c:if test="${pageMaker.prev}"> -->
+					<li th:if=${pageMaker.prev} class="page-item disabled"><span class="page-link" onclick="goPage(${pageMaker.startPage-1})">Previous</span>
+				<!-- </c:if> -->
+				</li>
+				<!-- <c:forEach begin="${pageMaker.startPage}" end="${pageMaker.endPage}" var="num"> -->
+					<li th:each=${} class="page-item"><a class="page-link" href="#" onclick="goPage(${num})">${num}</a></li>
+				<!-- </c:forEach> -->
+				<li class="page-item active" aria-current="page"></li>
+				<li class="page-item"><a class="page-link" href="#" onclick="goPage(${num})">$(num)</a></li>
+				<c:if test="${pageMaker.next}">
+					<li class="page-item"><a class="page-link" href="#" onclick="goPage(${pageMaker.endPage+1})">Next</a></li>
+				</c:if>
+			</ul>
+		</nav>
+		
+		<button onclick="boardInsert()">등록</button>
+	</div>
+	<script type="text/javascript">
+		function boardSelect(bno){
+			location.href="boardSelect?bno="+bno;
+		}
+		function boardInsert(bno){
+			location.href="boardInsertForm";
+		}
+		
+		function boardUpdate(bno){
+			location.href="boardUpdateForm?bno="+bno;
+		}
+		function boardDelete(bno){
+			location.href="boardDelete?bno="+bno;
+		}
+		
+		<!-- Modal -->
+		<div class="modal fade" id="staticBackdrop" data-bs-backdrop="static"
+			data-bs-keyboard="false" tabindex="-1"
+			aria-labelledby="staticBackdropLabel" aria-hidden="true">
+			<div class="modal-dialog">
+				<div class="modal-content">
+					<div class="modal-header">
+						<h5 class="modal-title" id="staticBackdropLabel">Modal title</h5>
+						<button type="button" class="btn-close" data-bs-dismiss="modal"
+							aria-label="Close"></button>
+					</div>
+					<div class="modal-body">
+						<div id="msg"></div>
+					</div>
+					<div class="modal-footer">
+						<button type="button" class="btn btn-secondary"
+							data-bs-dismiss="modal">Close</button>
+						<button type="button" class="btn btn-primary">Understood</button>
+					</div>
+				</div>
+			</div>
+		</div>
+		
+	</script>
+
+</body>
+</html>
